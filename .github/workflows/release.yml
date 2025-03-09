@@ -19,7 +19,11 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update 
-          sudo apt-get install -y googletest
+          sudo apt-get install -y googletest libssl-dev
+
+      - name: Download test data
+        run: |
+          curl -L -o data/ip_filter.tsv https://github.com/aleksandr-l-c3dlabs/otus-cpp/releases/download/3/ip_filter.tsv
 
       - name: Build
         run: |

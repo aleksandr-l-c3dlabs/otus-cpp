@@ -46,6 +46,11 @@ MACRO(_test target sources)
         CXX_STANDARD_REQUIRED ON
     )
 
+    target_include_directories(${target}
+        PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}"
+        PRIVATE "${CMAKE_CURRENT_BINARY_DIR}"
+    )
+
     target_link_libraries(${target}
         ${ARGN}
         GTest::gtest_main

@@ -1,0 +1,1 @@
+_test(test_version test_version.cpp helloworld_lib)

@@ -2,8 +2,8 @@ name: 'C++ CI'
 
 on:
   push:
-    tags:
-      - 'releases/v*'
+    branches:
+      - main
 
 jobs:
   build:

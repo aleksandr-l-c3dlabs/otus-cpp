@@ -13,8 +13,7 @@ repos:
         entry: clang-tidy
         args: [
           --config-file=.clang-tidy,
-          --quiet,
-          -extra-arg=-Iinclude
+          -p=build
         ]
         language: system
         types: [c++]

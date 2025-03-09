@@ -38,7 +38,7 @@ ENDMACRO()
 
 
 # Добавить новый тест в сборку
-MACRO(_test target sources lib)
+MACRO(_test target sources)
     add_executable(${target} ${sources})
 
     set_target_properties(${target} PROPERTIES
@@ -47,7 +47,7 @@ MACRO(_test target sources lib)
     )
 
     target_link_libraries(${target}
-        ${lib}
+        ${ARGN}
         GTest::gtest_main
     )
 

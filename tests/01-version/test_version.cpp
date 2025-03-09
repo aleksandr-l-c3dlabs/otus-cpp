@@ -1,5 +1,3 @@
-#include <sstream>
-
 #include <gtest/gtest.h>
 
 #include <lib.h>

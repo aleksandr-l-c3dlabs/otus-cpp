@@ -7,6 +7,8 @@ project(otus-homeworks VERSION ${PROJECT_VERSION})
 
 include(cmake/macros.cmake)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 option(WITH_TEST "Whether to build test" ON)
 
 add_subdirectory(src)

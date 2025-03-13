@@ -1,9 +1,19 @@
 #include "lib.h"
 
 #include <algorithm>
+#include <array>
 #include <cstdint>
 #include <functional>
 #include <vector>
+
+using ip = std::array<uint8_t, 4>;
+
+std::ostream& operator<<(std::ostream& os, const ip& address) {
+  os << static_cast<int>(address[0]) << "." << static_cast<int>(address[1])
+     << "." << static_cast<int>(address[2]) << "."
+     << static_cast<int>(address[3]);
+  return os;
+}
 
 // ("",  '.') -> [""]
 // ("11", '.') -> ["11"]
@@ -29,48 +39,6 @@ std::vector<std::string> split(const std::string& str, char d) {
 }
 
 //
-struct ip {
-  uint8_t parts1;
-  uint8_t parts2;
-  uint8_t parts3;
-  uint8_t parts4;
-
-  ip(const std::string& str) {
-    auto p = split(str, '.');
-    if (p.size() != 4) {
-      throw std::invalid_argument("Invalid IP address: " + str);
-    }
-
-    parts1 = static_cast<uint8_t>(std::stoi(p[0]));
-    parts2 = static_cast<uint8_t>(std::stoi(p[1]));
-    parts3 = static_cast<uint8_t>(std::stoi(p[2]));
-    parts4 = static_cast<uint8_t>(std::stoi(p[3]));
-  }
-
-  bool operator==(const ip& other) const {
-    return parts1 == other.parts1 && parts2 == other.parts2 &&
-           parts3 == other.parts3 && parts4 == other.parts4;
-  }
-
-  bool operator<(const ip& other) const {
-    if (parts1 != other.parts1)
-      return parts1 < other.parts1;
-    if (parts2 != other.parts2)
-      return parts2 < other.parts2;
-    if (parts3 != other.parts3)
-      return parts3 < other.parts3;
-    return parts4 < other.parts4;
-  }
-
-  friend std::ostream& operator<<(std::ostream& os, const ip& ip) {
-    os << static_cast<int>(ip.parts1) << "." << static_cast<int>(ip.parts2)
-       << "." << static_cast<int>(ip.parts3) << "."
-       << static_cast<int>(ip.parts4);
-    return os;
-  }
-};
-
-//
 std::vector<ip> filter_ips(const std::vector<ip>& pool,
                            const std::function<bool(const ip&)>& filter) {
   std::vector<ip> result;
@@ -91,7 +59,17 @@ void ip_filter(std::istream& input, std::ostream& output) {
 
   for (std::string line; std::getline(input, line);) {
     auto v = split(line, '\t');
-    ip_pool.push_back(ip(v.at(0)));
+    auto p = split(v.at(0), '.');
+    if (p.size() != 4) {
+      throw std::invalid_argument("Invalid IP address: " + v.at(0));
+    }
+
+    uint8_t parts1 = static_cast<uint8_t>(std::stoi(p[0]));
+    uint8_t parts2 = static_cast<uint8_t>(std::stoi(p[1]));
+    uint8_t parts3 = static_cast<uint8_t>(std::stoi(p[2]));
+    uint8_t parts4 = static_cast<uint8_t>(std::stoi(p[3]));
+
+    ip_pool.push_back({parts1, parts2, parts3, parts4});
   }
 
   std::sort(ip_pool.begin(), ip_pool.end(),
@@ -102,17 +80,17 @@ void ip_filter(std::istream& input, std::ostream& output) {
 
   // 1.*.*.*
   print_ips(output, filter_ips(ip_pool, [](const ip& address) {
-              return address.parts1 == 1;
+              return address[0] == 1;
             }));
 
   // 46.70.*.*
   print_ips(output, filter_ips(ip_pool, [](const ip& address) {
-              return address.parts1 == 46 && address.parts2 == 70;
+              return address[0] == 46 && address[1] == 70;
             }));
 
   // 46.*.*.* | *.46.*.* | *.*.46.* | *.*.*.46
   print_ips(output, filter_ips(ip_pool, [](const ip& address) {
-              return address.parts1 == 46 || address.parts2 == 46 ||
-                     address.parts3 == 46 || address.parts4 == 46;
+              return address[0] == 46 || address[1] == 46 || address[2] == 46 ||
+                     address[3] == 46;
             }));
 }

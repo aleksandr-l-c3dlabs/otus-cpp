@@ -34,5 +34,8 @@
 #
 build/
 
+# doxygen
+doc/
+
 # test data
 data/

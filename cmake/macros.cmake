@@ -1,11 +1,11 @@
 # Задача
-MACRO(_task target)
+MACRO(_task target useTemplates)
     add_executable(${target} main.cpp)
     add_library(${target}_lib lib.cpp ${ARGN})
     add_library(${target}_i INTERFACE)
 
     set_target_properties(${target} ${target}_lib PROPERTIES
-        CXX_STANDARD 17
+        CXX_STANDARD 20
         CXX_STANDARD_REQUIRED ON
     )
 
@@ -14,12 +14,18 @@ MACRO(_task target)
         PRIVATE "${CMAKE_CURRENT_BINARY_DIR}"
     )
 
-    target_link_libraries(${target}
-        PRIVATE ${target}_lib
-    )
+    if(${useTemplates})
+        target_link_libraries(${target}
+            PRIVATE ${target}_i
+        )
+    else()
+        target_link_libraries(${target}
+            PRIVATE ${target}_lib
+        )
+    endif()
 
     target_include_directories(${target}_i INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/")
-    target_compile_features(${target}_i INTERFACE cxx_std_17)
+    target_compile_features(${target}_i INTERFACE cxx_std_20)
 
     if (MSVC)
         target_compile_options(${target} PRIVATE

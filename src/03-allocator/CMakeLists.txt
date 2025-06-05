@@ -1,1 +1,1 @@
-_task(allocator)
+_task(allocator OFF)

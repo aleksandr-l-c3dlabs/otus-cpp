@@ -1,1 +1,1 @@
-_task(print_ip)
+_task(print_ip ON)

@@ -3,4 +3,4 @@ configure_file(
     ${CMAKE_CURRENT_BINARY_DIR}/version.h
 )
 
-_task(helloworld)
+_task(helloworld FALSE)

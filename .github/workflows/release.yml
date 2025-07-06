@@ -31,6 +31,18 @@ jobs:
           cmake --build .
           cmake --build . --target test
           cmake --build . --target package
+
+      - name: Store DEB packages
+        id: deb-files
+        run: |
+          DEB_FILES=$(ls build/*.deb | tr '\n' ' ')
+          echo "deb_files=${DEB_FILES}" >> $GITHUB_OUTPUT
+          
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: deb-packages
+          path: "build/*.deb"
       
       - name: Create Release
         id: create_release
@@ -42,14 +54,18 @@ jobs:
           release_name: Release ${{ github.run_number }}
           draft: false
           prerelease: false
-        
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: deb-packages
+          
+      - name: Upload release assets
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./otus-homeworks-0.0.${{ github.run_number }}-Linux.deb
-          asset_name: otus-homeworks-0.0.${{ github.run_number }}-Linux.deb
-          asset_content_type: application/vnd.debian.binary-package
+        run: |
+          for deb_file in *.deb; do
+            echo "Uploading $deb_file"
+            gh release upload ${{ github.run_number }} "$deb_file" \
+              --repo ${{ github.repository }}
+          done

@@ -43,7 +43,16 @@ MACRO(_task target useTemplates)
         )
     endif()
 
-    install(TARGETS ${target} RUNTIME DESTINATION bin)
+    # install(TARGETS ${target} RUNTIME DESTINATION bin)
+    install(TARGETS ${target} DESTINATION bin COMPONENT ${target})
+
+    # Аккамулятор отдельных пакетов для cpack
+    get_property(cpack_targets GLOBAL PROPERTY CPACK_TARGETS)
+    if(NOT cpack_targets)
+        set(cpack_targets "")
+    endif()
+    LIST(APPEND cpack_targets "${target}")
+    set_property(GLOBAL PROPERTY CPACK_TARGETS "${cpack_targets}")
 ENDMACRO()
 
 
@@ -91,5 +100,10 @@ MACRO(_test_link target)
     )
 ENDMACRO()
 
+
+MACRO(_get_cpack_components out_var)
+    get_property(cpack_targets GLOBAL PROPERTY CPACK_TARGETS)
+    set(${out_var} "${cpack_targets}")
+ENDMACRO()
 
 

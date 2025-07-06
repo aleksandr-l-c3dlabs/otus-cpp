@@ -23,3 +23,10 @@ cmake --build .
 ctest --test-dir build
 ```
 
+## Pack in *.deb
+
+```shell
+cd build
+cmake --build . --target package
+```
+

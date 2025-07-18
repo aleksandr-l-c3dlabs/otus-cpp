@@ -1,7 +1,7 @@
 # Задача
-MACRO(_task target useTemplates)
+MACRO(_task target useTemplates compTarget)
     add_executable(${target} main.cpp)
-    add_library(${target}_lib lib.cpp ${ARGN})
+    add_library(${target}_lib STATIC lib.cpp ${ARGN})
     add_library(${target}_i INTERFACE)
 
     set_target_properties(${target} ${target}_lib PROPERTIES
@@ -26,6 +26,7 @@ MACRO(_task target useTemplates)
 
     target_include_directories(${target}_i INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/")
     target_compile_features(${target}_i INTERFACE cxx_std_20)
+    target_link_libraries(${target}_i INTERFACE ${target}_lib)
 
     if (MSVC)
         target_compile_options(${target} PRIVATE
@@ -43,15 +44,22 @@ MACRO(_task target useTemplates)
         )
     endif()
 
+    if("${compTarget}" STREQUAL "")
+        set(componentName "${target}")
+
     # install(TARGETS ${target} RUNTIME DESTINATION bin)
-    install(TARGETS ${target} DESTINATION bin COMPONENT ${target})
+        install(TARGETS ${target} RUNTIME DESTINATION bin COMPONENT ${componentName})
+    else()
+        set(componentName "${compTarget}")
+    endif()
+
 
     # Аккамулятор отдельных пакетов для cpack
     get_property(cpack_targets GLOBAL PROPERTY CPACK_TARGETS)
     if(NOT cpack_targets)
         set(cpack_targets "")
     endif()
-    LIST(APPEND cpack_targets "${target}")
+    LIST(APPEND cpack_targets "${componentName}")
     set_property(GLOBAL PROPERTY CPACK_TARGETS "${cpack_targets}")
 ENDMACRO()
 

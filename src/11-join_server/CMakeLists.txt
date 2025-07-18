@@ -1,7 +1,7 @@
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(SQLite3 REQUIRED)
 
-_task(join_server OFF
+_task(join_server OFF ""
     server.cpp
 )
 

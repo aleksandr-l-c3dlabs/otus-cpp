@@ -10,7 +10,8 @@ MACRO(_task target useTemplates compTarget)
     )
 
     target_include_directories(${target}_lib
-        PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}"
+        PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}" 
+               "${CMAKE_CURRENT_SOURCE_DIR}/.."
         PRIVATE "${CMAKE_CURRENT_BINARY_DIR}"
     )
 
@@ -46,8 +47,8 @@ MACRO(_task target useTemplates compTarget)
 
     if("${compTarget}" STREQUAL "")
         set(componentName "${target}")
-
-    # install(TARGETS ${target} RUNTIME DESTINATION bin)
+        
+        # install(TARGETS ${target} RUNTIME DESTINATION bin)
         install(TARGETS ${target} RUNTIME DESTINATION bin COMPONENT ${componentName})
     else()
         set(componentName "${compTarget}")

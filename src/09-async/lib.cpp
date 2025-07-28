@@ -1,10 +1,10 @@
 #include "lib.h"
 
-#include <shared/async.h>
 #include <atomic>
 #include <csignal>
 #include <iostream>
 #include <string>
+#include "shared/async.h"
 
 std::atomic<bool> interrupted = false;
 

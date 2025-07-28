@@ -1,13 +1,14 @@
 #pragma once
 
-#include "event.h"
+#include "events.h"
 #include "listener.h"
 
 class Saver : public EventListener<PackEvent> {
  public:
-  Saver();
+  Saver(bool randomPostfix = false);
 
   void onEvent(const PackEvent&) override;
 
  private:
+  bool randomPostfix;
 };

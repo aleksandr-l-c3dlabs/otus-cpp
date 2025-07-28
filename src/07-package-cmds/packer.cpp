@@ -17,7 +17,8 @@ void Packer::onEvent(const InputCommandEvent& event) {
         created = std::time(nullptr);
       collection.push_back(event.command);
     }
-    if (level == 0 && (event.interrupted || collection.size() == pack_size))
+    if (level == 0 && collection.size() > 0 &&
+        (event.interrupted || collection.size() == pack_size))
       packCollection();
   }
 }

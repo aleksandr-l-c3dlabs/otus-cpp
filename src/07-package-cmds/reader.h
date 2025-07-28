@@ -2,7 +2,7 @@
 
 #include <atomic>
 #include <sstream>
-#include "event.h"
+#include "events.h"
 #include "provider.h"
 
 class Reader : public EventProvider<InputCommandEvent> {

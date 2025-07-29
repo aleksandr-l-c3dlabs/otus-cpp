@@ -19,7 +19,10 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang-tidy clang-format libboost1.83-dev libsqlite3-dev
+          sudo apt-get install -y cmake clang-tidy clang-format libssl-dev libboost1.83-dev libboost-system1.83-dev libboost-filesystem1.83-dev libboost-program-options1.83-dev libsqlite3-dev
+
+      - name: Prepare build commands
+        run: cmake . -DPATCH_VERSION=1 -DWITH_TEST=ON
 
       - name: Check formatting
         run: |
@@ -30,7 +33,7 @@ jobs:
 
       - name: Static analysis
         run: |
-          if ! clang-tidy src/**/*.cpp -- -std=c++17 -Iinclude; then
+          if ! clang-tidy src/**/*.cpp; then
             echo "Static analysis issues found."
             exit 1
           fi

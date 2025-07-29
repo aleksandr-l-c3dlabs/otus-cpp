@@ -37,8 +37,8 @@ jobs:
         with:
           name: deb-packages
           path: |
-            "*.deb"
-            "!*-Unspecified.deb"
+            *.deb
+            !*-Unspecified.deb
       
       - name: Create Release
         id: create_release

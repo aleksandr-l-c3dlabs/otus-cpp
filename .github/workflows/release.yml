@@ -31,14 +31,7 @@ jobs:
           cmake --build .
           cmake --build . --target test
           cmake --build . --target package
-          
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: deb-packages
-          path: |
-            *.deb
-            !*-Unspecified.deb
+          rm *-Unspecified.deb
       
       - name: Create Release
         id: create_release
@@ -50,11 +43,6 @@ jobs:
           release_name: Release ${{ github.run_number }}
           draft: false
           prerelease: false
-
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: deb-packages
           
       - name: Upload release assets
         env:

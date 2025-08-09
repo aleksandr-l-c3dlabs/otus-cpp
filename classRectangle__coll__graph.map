@@ -1,0 +1,4 @@
+<map id="Rectangle" name="Rectangle">
+<area shape="rect" id="node1" title="Rectangle primitive (position + size)" alt="" coords="5,79,85,104"/>
+<area shape="rect" id="node2" href="$classPrimitive.html" title="Base SVG primitive class." alt="" coords="9,5,82,31"/>
+</map>

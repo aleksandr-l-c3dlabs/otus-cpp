@@ -1,0 +1,6 @@
+<map id="Primitive" name="Primitive">
+<area shape="rect" id="node1" title="Base SVG primitive class." alt="" coords="71,5,144,31"/>
+<area shape="rect" id="node2" href="$classCircle.html" title="Circle primitive (position + radius)" alt="" coords="5,79,60,104"/>
+<area shape="rect" id="node3" href="$classLine.html" title="Multipoint line primitive." alt="" coords="84,79,131,104"/>
+<area shape="rect" id="node4" href="$classRectangle.html" title="Rectangle primitive (position + size)" alt="" coords="155,79,235,104"/>
+</map>
